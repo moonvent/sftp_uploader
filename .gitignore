@@ -1,0 +1,4 @@
+dist*
+venv*
+pyrightconfig.json
+poetry.lock
