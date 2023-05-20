@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     user: str = None
     password: str = None
 
+    remote_path: str = None
+
     def load_settings(self):
         """
             Load settings if exists, in another case create config file
@@ -39,11 +41,14 @@ class Settings(BaseSettings):
             port = '22'
         user = input('User: ')
         password = input('Password: ')
+        remote_path = input('Remote path from server: ')
 
         return dict(host=host, 
                     port=port, 
                     user=user,
-                    password=password)
+                    password=password,
+                    remote_path=remote_path,
+                    )
 
     def __save_config(self, 
                       auth_data: dict):

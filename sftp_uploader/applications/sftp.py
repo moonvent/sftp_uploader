@@ -3,7 +3,6 @@
 """
 
 
-from logging import Logger
 from sftp_uploader.applications.ssh import SSHClient
 from paramiko import SFTPClient as ParamikoSFTPClient
 
