@@ -31,6 +31,9 @@ classifiers = [
 python = "^3.11"
 paramiko = "^3.1.0"
 gitpython = "^3.1.31"
+dependency-injector = "^4.41.0"
+pydantic = "^1.10.7"
+python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
