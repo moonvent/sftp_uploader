@@ -2,3 +2,4 @@ dist*
 venv*
 pyrightconfig.json
 poetry.lock
+*__pycache__*

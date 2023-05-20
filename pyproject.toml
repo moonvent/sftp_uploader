@@ -1,12 +1,21 @@
-[project]
-name = "Sftp_Uploader_Moonvent"
-version = "0.0.1"
-authors = [
-  { name="Moonvent", email="moonvent@proton.me" },
-]
+[tool.poetry]
+name = "sftp_uploader"
+version = "0.1.4"
 description = "Package for upload data to sftp with different parametrs and with different methods"
+
+authors = ["Moonvent <moonvent@proton.me>"]
+
+license = "MIT"
 readme = "README.md"
-requires-python = ">=3.11"
+
+packages = [{include = "sftp_uploader"}]
+
+homepage = "https://github.com/moonvent/sftp_uploader/"
+repository = "https://github.com/moonvent/sftp_uploader/"
+documentation = "https://github.com/moonvent/sftp_uploader/blob/master/README.md"
+
+keywords = ["sftp", "git"]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -14,18 +23,9 @@ classifiers = [
     "Environment :: Console",
 ]
 
-[project.urls]
-"Homepage" = "https://github.com/moonvent/sftp_uploader"
-"Bug Tracker" = "https://github.com/moonvent/sftp_uploader/issues"
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/moonvent/sftp_uploader/issues/"
 
-[tool.poetry]
-name = "sftp_uploader"
-version = "0.1.0"
-description = "Script for upload files to sftp"
-authors = ["Moonvent <moonvent@proton.me>"]
-license = "MIT License"
-readme = "README.md"
-packages = [{include = "sftp_uploader"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
