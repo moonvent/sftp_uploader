@@ -5,6 +5,8 @@
 
 from git import DiffIndex, Repo
 
+from sftp_uploader.applications.logs import CustomLogger
+
 
 class CustomGit:
     """
@@ -14,8 +16,12 @@ class CustomGit:
             __repo (Repo): local repo path
     """
     __repo: Repo = None
+    logger: CustomLogger = None
 
-    def __init__(self) -> None:
+    def __init__(self,
+                 logger: CustomLogger,
+                 ) -> None:
+        self.logger = logger
         self.__repo = Repo('.')
 
     def __get_modified_files(self) -> DiffIndex:
@@ -25,7 +31,10 @@ class CustomGit:
             Returns:
                 DiffIndex: smth like list with modified files
         """
-        return self.__repo.index.diff(None)
+        head_commit = self.__repo.head.commit
+        result = head_commit.diff(None)
+        self.logger.info(f'Find {len(result)} files to upload')
+        return result
 
     def __get_modified_files_paths(self, 
                                    files: DiffIndex) -> list[str]:

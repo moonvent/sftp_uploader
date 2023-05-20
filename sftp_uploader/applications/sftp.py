@@ -3,8 +3,12 @@
 """
 
 
+import os
+from sftp_uploader.applications.logs import CustomLogger
 from sftp_uploader.applications.ssh import SSHClient
 from paramiko import SFTPClient as ParamikoSFTPClient
+
+from sftp_uploader.services.exceptions.sftp import ErrorUploadSFTPException
 
 
 class SFTPClient:
@@ -13,12 +17,77 @@ class SFTPClient:
     """
     __ssh: SSHClient = None
     __sftp: ParamikoSFTPClient = None
+    logger: CustomLogger = None
+    __remote_root_path: str = None
 
     def __init__(self,
-                 custom_ssh_client: SSHClient) -> None:
-        self.__ssh = custom_ssh_client
+                 ssh_client: SSHClient,
+                 remote_root_path: str,
+                 logger: CustomLogger,
+                 ) -> None:
+        self.logger = logger
+        self.__ssh = ssh_client
         self.__sftp = self.__ssh.get_sftp_client()
+        self.__remote_root_path = remote_root_path
 
     def __del__(self):
         self.__sftp.close()
+
+    def __get_directories_in_path(self, 
+                                  path: str):
+        """
+            Get all directories to file
+        """
+        directories = []
+
+        while path not in ('', '/'):
+            path, directory = os.path.split(path)
+            directories.append(directory)
+
+        return directories[::-1]       
+
+    def __check_exist_directory_to_upload(self, 
+                                          remote_path: str):
+        """
+            Check to exists remote directory, if not - create it
+        """
+        directories = self.__get_directories_in_path(os.path.dirname(remote_path))
+        exists_path = ''
+
+        while directories:
+            new_path = os.path.join(exists_path, 
+                                    directories.pop(0))
+            new_remote_path = os.path.join(self.__remote_root_path,
+                                           new_path)
+            try:
+                self.__sftp.stat(new_remote_path)
+
+            except FileNotFoundError:
+                self.__sftp.mkdir(new_remote_path)
+
+            finally:
+                exists_path = new_path
+
+    def upload_file_to_remote(self,
+                              local_path: str,
+                              remote_path: str):
+        """
+            Upload local file to remote server
+        """
+        # self.logger.error(f'Try to upload file `{local_path}` to `{remote_path}`')
+        self.logger.info(f'Try to upload file `{local_path}` to `{remote_path}`')
+
+        try:
+            self.__check_exist_directory_to_upload(local_path)
+
+            self.__sftp.put(local_path, 
+                            remote_path)
+
+        except Exception as e:
+            self.logger.exception(f'In upload to server error - `{e}`\nlocal file - `{local_path}`\nremote file - `{remote_path}`')
+            raise ErrorUploadSFTPException
+        
+        else:
+            self.logger.info(f'Success upload file `{local_path}` to `{remote_path}`')
+
 

@@ -1,8 +1,18 @@
+from sftp_uploader.applications.dependency_container import DependencyContainer
+from dependency_injector.wiring import Provide, inject
+
+from sftp_uploader.applications.sftp_uploader import SftpUploader
 
 
-from sftp_uploader.applications.git_manipulation import CustomGit
+@inject
+def update_files(sftp_upload: SftpUploader = Provide[DependencyContainer.SftpUploader]):
+    sftp_upload.upload_to_remote()
 
 
 if __name__ == "__main__":
-    print(CustomGit().get_different_files_paths_from_latest_commit())
-    ...
+    dependency_container = DependencyContainer()
+    dependency_container.init_resources()
+    dependency_container.wire(modules=[__name__])
+
+    update_files()
+

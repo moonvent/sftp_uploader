@@ -76,5 +76,4 @@ class Settings(BaseSettings):
 settings = Settings()
 settings.load_settings()
 settings = Settings.parse_file(CONFIG_FILE_NAME)
-print(settings.port)
 
