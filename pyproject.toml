@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sftp_uploader"
-version = "0.1.4"
+version = "1.0.0"
 description = "Package for upload data to sftp with different parametrs and with different methods"
 
 authors = ["Moonvent <moonvent@proton.me>"]
@@ -52,4 +52,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-post_install = "sftp_uploader.setup_actions:run"
+post_install = "sftp_uploader.poetry_post_install_actions:poetry_post_install_actions"
