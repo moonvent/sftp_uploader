@@ -22,6 +22,8 @@ handle_exception() {
 trap handle_exception ERR
 
 python -c "import sftp_uploader; sftp_uploader.pre_commit_actions()"
+
+exit 0
 """
 
 
