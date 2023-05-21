@@ -8,7 +8,7 @@ from pathlib import Path
 from git import DiffIndex, Repo
 
 from sftp_uploader.applications.logs import CustomLogger
-from sftp_uploader.constants.applications.git_manipulation import GIT_IGNORE_FILENAME
+from sftp_uploader.constants.applications.git_manipulation import GIT_HOOK_PRECOMMIT_FILE, GIT_HOOK_SCRIPT_TO_UPLOAD, GIT_HOOKS_FOLDER, GIT_IGNORE_FILENAME
 
 
 class CustomGit:
@@ -104,7 +104,9 @@ class CustomGit:
     def __create_gitignore(self):
         open(GIT_IGNORE_FILENAME, 
              'w').close()
+        self.logger.info('Successfully create git repo')
         self.__repo.git.add(GIT_IGNORE_FILENAME)
+        self.logger.info('Successfully add gitignore file')
 
     def __check_gitignore_object(self):
         if not self.__is_exist_gitignore():
@@ -123,4 +125,30 @@ class CustomGit:
             with open(file,
                       'a') as gitignore:
                 gitignore.write(f'\n{filename}\n')
+            self.logger.info('Successfully add in gitignore config')
+
+    def __check_git_hook_pre_commit(self):
+        """
+            Check on exists need hook file
+        """
+        if not Path(GIT_HOOK_PRECOMMIT_FILE).exists():
+            open(GIT_HOOK_PRECOMMIT_FILE, 
+                 'w').close()
+            self.logger.info('Successfully create pre-commit file')
+
+    def __add_upload_to_sftp_bash_code(self):
+        """
+            Add script to start python scripts before commit
+        """
+        with open(GIT_HOOK_PRECOMMIT_FILE, 
+                  'a') as pre_commit_bash_file:
+            pre_commit_bash_file.write(f'\n{GIT_HOOK_SCRIPT_TO_UPLOAD}')
+            self.logger.info('Successfully add script on load to sftp to pre-commit file')
+
+    def add_prehook_upload(self):
+        """
+            Add to prehooks upload to sftp server
+        """
+        self.__check_git_hook_pre_commit()
+        self.__add_upload_to_sftp_bash_code()
 

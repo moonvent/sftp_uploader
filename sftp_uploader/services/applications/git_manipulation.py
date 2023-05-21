@@ -16,3 +16,12 @@ def add_config_file_to_gitignore(git: CustomGit = Provide[DependencyContainer.Gi
         Add config file package to gitignore
     """
     git.add_to_gitignote(CONFIG_FILE_NAME)
+
+
+@inject
+def add_sftp_upload_in_prehook(git: CustomGit = Provide[DependencyContainer.Git]):
+    """
+        Add config file package to gitignore
+    """
+    git.add_prehook_upload()
+
