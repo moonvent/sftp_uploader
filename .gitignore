@@ -3,4 +3,5 @@ venv*
 pyrightconfig.json
 poetry.lock
 *__pycache__*
+
 sftp_config.json

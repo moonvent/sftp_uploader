@@ -4,6 +4,8 @@
 
 
 import os
+from os.path import isdir
+from typing import Callable
 from sftp_uploader.applications.logs import CustomLogger
 from sftp_uploader.applications.ssh import SSHClient
 from paramiko import SFTPClient as ParamikoSFTPClient
@@ -68,26 +70,63 @@ class SFTPClient:
             finally:
                 exists_path = new_path
 
+    def __remove_from_remote(self, 
+                             local_path: str,
+                             remote_path: str):
+        """
+            If file was deleted, remove it on remote server
+        """
+        remove_method: Callable = None
+
+        try:
+            self.__sftp.stat(remote_path)
+
+        except Exception as e:
+            self.logger.info(f'File `{remote_path}` already delete')
+
+        else:
+            if os.path.isdir(local_path):
+                remove_method = self.__sftp.rmdir
+
+            else:
+                remove_method = self.__sftp.remove
+
+            remove_method(remote_path)
+            self.logger.info(f'Success DELETE file `{remote_path}` from remote')
+
+    def __upload_to_remote(self,
+                          local_path: str,
+                          remote_path: str):
+        """
+            Upload file to remote
+        """
+        self.__sftp.put(local_path, 
+                        remote_path)
+        self.logger.info(f'Success UPLOAD file `{local_path}` to `{remote_path}`')
+
     def upload_file_to_remote(self,
                               local_path: str,
                               remote_path: str):
         """
             Upload local file to remote server
         """
-        # self.logger.error(f'Try to upload file `{local_path}` to `{remote_path}`')
-        self.logger.info(f'Try to upload file `{local_path}` to `{remote_path}`')
+        self.logger.info(f'Try to modify file `{local_path}` to `{remote_path}`')
+        method_to_work_with_sftp: Callable = None
 
         try:
             self.__check_exist_directory_to_upload(local_path)
 
-            self.__sftp.put(local_path, 
-                            remote_path)
+            if not os.path.exists(local_path):
+                method_to_work_with_sftp = self.__remove_from_remote
+
+            else:
+                method_to_work_with_sftp = self.__upload_to_remote
+
+            method_to_work_with_sftp(local_path=local_path,
+                                     remote_path=remote_path)
 
         except Exception as e:
             self.logger.exception(f'In upload to server error - `{e}`\nlocal file - `{local_path}`\nremote file - `{remote_path}`')
             raise ErrorUploadSFTPException
-        
-        else:
-            self.logger.info(f'Success upload file `{local_path}` to `{remote_path}`')
 
 

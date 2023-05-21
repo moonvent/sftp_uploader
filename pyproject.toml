@@ -50,3 +50,6 @@ twine = "^4.0.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+post_install = "sftp_uploader.setup_actions:run"

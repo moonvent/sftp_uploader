@@ -37,7 +37,7 @@ class Settings(BaseSettings):
         """
         host = input('Host: ')
         port = input('Port (default=22, press Enter to skip): ')
-        if port == '\n':
+        if not port:
             port = '22'
         user = input('User: ')
         password = input('Password: ')
@@ -69,6 +69,8 @@ class Settings(BaseSettings):
         """
         auth_data: dict = self.__get_config_data_from_user()
         self.__save_config(auth_data=auth_data)
+
+        print(f'Your data is successfully save to file `{CONFIG_FILE_NAME}`, if you want to change it, you can change it here')
 
         self.parse_file(CONFIG_FILE_NAME)
 
