@@ -4,6 +4,7 @@
 
 
 import os
+import stat
 from pathlib import Path
 from git import DiffIndex, Repo
 
@@ -134,16 +135,24 @@ class CustomGit:
         if not Path(GIT_HOOK_PRECOMMIT_FILE).exists():
             open(GIT_HOOK_PRECOMMIT_FILE, 
                  'w').close()
+
+            os.chmod(GIT_HOOK_PRECOMMIT_FILE,
+                     stat.S_IRWXU)
+            # pre-commit file must be executable
             self.logger.info('Successfully create pre-commit file')
 
     def __add_upload_to_sftp_bash_code(self):
         """
             Add script to start python scripts before commit
         """
-        with open(GIT_HOOK_PRECOMMIT_FILE, 
-                  'a') as pre_commit_bash_file:
-            pre_commit_bash_file.write(f'\n{GIT_HOOK_SCRIPT_TO_UPLOAD}')
-            self.logger.info('Successfully add script on load to sftp to pre-commit file')
+        precommit_file = Path(GIT_HOOK_PRECOMMIT_FILE)
+
+        if GIT_HOOK_SCRIPT_TO_UPLOAD not in precommit_file.read_text():
+            with open(GIT_HOOK_PRECOMMIT_FILE, 
+                      'a') as pre_commit_bash_file:
+                pre_commit_bash_file.write(f'\n{GIT_HOOK_SCRIPT_TO_UPLOAD}')
+                self.logger.info('Successfully add script on load to sftp to pre-commit file')
+            
 
     def add_prehook_upload(self):
         """

@@ -1,17 +1,29 @@
 GIT_IGNORE_FILENAME = '.gitignore'
 
 
-GIT_HOOK_SCRIPT_TO_UPLOAD = """
-architecture=$(uname -m)
+# GIT_HOOK_SCRIPT_TO_UPLOAD = """
+# #!/bin/sh
+#
+# handle_exception() {
+#     arch -arm64 python main.py
+# }
+#
+# trap handle_exception ERR
+#
+# python main.py
+# """
 
-if [ "$architecture" == "x86_64" ]; then
-    python main.py
-elif [ "$architecture" == "arm64" ]; then
-    arch -arm64 python main.py
-else
-    echo "Unsupported architecture: $architecture"
-fi
+GIT_HOOK_SCRIPT_TO_UPLOAD = """#!/bin/sh
+
+handle_exception() {
+    arch -arm64 python -c "import sftp_uploader; sftp_uploader.pre_commit_actions()"
+}
+
+trap handle_exception ERR
+
+python -c "import sftp_uploader; sftp_uploader.pre_commit_actions()"
 """
+
 
 
 GIT_HOOKS_FOLDER = '.git/hooks/'

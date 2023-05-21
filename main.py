@@ -4,7 +4,7 @@ from sftp_uploader.services.applications.git_manipulation import add_sftp_upload
 
 
 if __name__ == "__main__":
-    # pre_commit_actions()
+    pre_commit_actions()
     # add_sftp_upload_in_prehook()
     ...
 

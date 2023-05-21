@@ -42,3 +42,5 @@ class SftpUploader:
                                               remote_path=os.path.join(settings.remote_path,
                                                                        filepath))
 
+        self.logger.info('File update complete.')
+
