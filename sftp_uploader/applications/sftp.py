@@ -95,8 +95,8 @@ class SFTPClient:
             self.logger.info(f'Success DELETE file `{remote_path}` from remote')
 
     def __upload_to_remote(self,
-                          local_path: str,
-                          remote_path: str):
+                           local_path: str,
+                           remote_path: str):
         """
             Upload file to remote
         """

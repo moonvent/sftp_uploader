@@ -1,18 +1,5 @@
 GIT_IGNORE_FILENAME = '.gitignore'
 
-
-# GIT_HOOK_SCRIPT_TO_UPLOAD = """
-# #!/bin/sh
-#
-# handle_exception() {
-#     arch -arm64 python main.py
-# }
-#
-# trap handle_exception ERR
-#
-# python main.py
-# """
-
 GIT_HOOK_SCRIPT_TO_UPLOAD = """#!/bin/sh
 
 handle_exception() {

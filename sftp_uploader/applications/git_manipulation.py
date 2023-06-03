@@ -126,7 +126,7 @@ class CustomGit:
             with open(file,
                       'a') as gitignore:
                 gitignore.write(f'\n{filename}\n')
-            self.logger.info('Successfully add in gitignore config')
+            self.logger.info('Successfully add your sftp config to gitignore')
 
     def __check_git_hook_pre_commit(self):
         """
