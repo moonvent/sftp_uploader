@@ -4,4 +4,9 @@ pyrightconfig.json
 poetry.lock
 *__pycache__*
 
+.pypirc
+build/
+sftp_uploader.egg-info/
+
+
 sftp_config.json
