@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sftp_uploader"
-version = "1.0.12"
+version = "1.0.13"
 description = "Package for upload data in before commit uncommited files to sftp server"
 
 authors = ["Moonvent <moonvent@proton.me>"]
@@ -33,7 +33,7 @@ paramiko = "^3.1.0"
 gitpython = "^3.1.31"
 dependency-injector = "^4.41.0"
 pydantic = "^1.10.7"
-python-dotenv = "^1.0.0"
+python-dotenv = "^0.21.0"
 
 
 [tool.poetry.group.dev.dependencies]
