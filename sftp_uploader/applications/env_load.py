@@ -41,7 +41,7 @@ class Settings(BaseSettings):
             port = '22'
         user = input('User: ')
         password = input('Password: ')
-        remote_path = input('Remote path from server: ')
+        remote_path = input('Remote path from server (project directory, you need to create it and path to it set it here): ')
 
         return dict(host=host, 
                     port=port, 
