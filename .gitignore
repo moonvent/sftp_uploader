@@ -10,3 +10,5 @@ sftp_uploader.egg-info/
 
 
 sftp_config.json
+
+.idea*
