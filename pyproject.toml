@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sftp_uploader"
-version = "1.0.14"
+version = "1.0.15"
 description = "Package for upload data in before commit uncommited files to sftp server"
 
 authors = ["Moonvent <moonvent@proton.me>"]
